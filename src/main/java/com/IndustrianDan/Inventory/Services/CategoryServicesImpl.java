@@ -29,19 +29,15 @@ public class CategoryServicesImpl implements ICategoryService {
 			
 			try 
 			{
-				
 				List<Category> category = (List<Category>) categoryDao.findAll(); 
 				response.getCategoryResponse().setCategory(category); 
 				response.setMetadata( " Respuesta bien " , " 00 ", " Respuesta exitosa ");
-				
 			} 
 			catch(Exception e) 
 			{
-				
 				response.setMetadata( " Respuesta mal " , " -1 ", " Error al Consultar ");
 				e.getStackTrace();
 				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-				
 			}
 			
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);      
@@ -60,31 +56,57 @@ public class CategoryServicesImpl implements ICategoryService {
 				Optional<Category> category = categoryDao.findById(id);      
 				if(category.isPresent()) 
 				{
-					
 					list.add(category.get()); 
 					response.getCategoryResponse().setCategory(list);
 					response.setMetadata( " Respuesta bien " , " 00 ", " Categoria encontrada " ); 
-					
 				}
 				else 
 				{
-					
-					response.setMetadata( " Respuesta mal " , " -1 ", " La categoria no ha sido encontrada " ); 
-					return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND); 
-					
+					response.setMetadata( " Respuesta mal " , " -1 ", " La categoría no ha sido encontrada " ); 
+					return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND); 	
 				}
 				
 			} 
 			catch(Exception e) 
 			{
-				
 				response.setMetadata( " Respuesta mal " , " -1 ", " Error al Consultar por ID ");
 				e.getStackTrace();
 				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-				
 			}
 			
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
 		}
+
+		@Override 
+		@Transactional 
+		public ResponseEntity<CategoryResponseRest> save(Category category) 
+		{
+			CategoryResponseRest response = new CategoryResponseRest();  
+			List<Category> list = new ArrayList<>();  
+			
+			try 
+			{ 
+				Category categorySaved = categoryDao.save(category);
+				if(categorySaved != null) 
+				{
+					list.add(categorySaved);   
+					response.getCategoryResponse().setCategory(list); 
+					response.setMetadata( " Respuesta bien " , " 00 ", " La categoría ha sido guardada con éxito " ); 
+				}
+				else 
+				{
+					response.setMetadata( " Respuesta mal " , " -1 ", " La categoría no ha sido guardada " ); 
+					return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);   
+				}
+			} 
+			catch(Exception e) 
+			{
+				response.setMetadata( " Respuesta mal " , " -1 ", " Error al Grabar la categoría ");
+				e.getStackTrace();
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);	
+			}
+			
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK); 
+		} 
 
 }

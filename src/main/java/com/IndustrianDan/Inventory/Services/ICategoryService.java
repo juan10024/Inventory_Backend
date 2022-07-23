@@ -2,10 +2,12 @@ package com.IndustrianDan.Inventory.Services;
 
 import org.springframework.http.ResponseEntity;
 
+import com.IndustrianDan.Inventory.Model.Category;
 import com.IndustrianDan.Inventory.Response.CategoryResponseRest;
 
 public interface ICategoryService {
 
 	public ResponseEntity<CategoryResponseRest> search(); 
 	public ResponseEntity<CategoryResponseRest> searchById(Long id);  
+	public ResponseEntity<CategoryResponseRest> save(Category category); 
 }
