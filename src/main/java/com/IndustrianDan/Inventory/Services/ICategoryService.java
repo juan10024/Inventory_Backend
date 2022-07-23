@@ -7,5 +7,5 @@ import com.IndustrianDan.Inventory.Response.CategoryResponseRest;
 public interface ICategoryService {
 
 	public ResponseEntity<CategoryResponseRest> search(); 
-	
+	public ResponseEntity<CategoryResponseRest> searchById(Long id);  
 }
